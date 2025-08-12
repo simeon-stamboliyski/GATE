@@ -47,7 +47,7 @@ def gauss2d(L, s, ord_=0, beffect=False):
     else:
         wy = np.exp(-wy ** 2)
 
-    # kron(wy, wx) so w shape matches (ny, nx)
+
     w = np.outer(wy, wx)
 
     FFL = FFL * w
@@ -71,9 +71,9 @@ Image = np.array([
     [5, 6, 7, 8, 9]
 ], dtype=float)
 
-s = [1, 1]       # Gaussian scale in x and y directions
-ord_ = [0, 0]    # No derivative, just smoothing
-beffect = False  # No boundary effect padding
+s = [1, 1]       
+ord_ = [0, 0]    
+beffect = False  
 
 G, w, ffx = gauss2d(Image, s, ord_, beffect)
 

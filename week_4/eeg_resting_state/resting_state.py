@@ -2,13 +2,12 @@ import numpy as np
 from scipy.signal import welch
 import matplotlib.pyplot as plt
 
-# NumPy 2.0 renamed trapz -> trapezoid; this keeps it compatible with both.
 trapz = getattr(np, "trapezoid", np.trapz)
 
 def detect_rest_epochs(
-    eeg,                      # np.ndarray, shape (n_channels, n_samples)
-    fs,                       # sampling rate (Hz)
-    channel_names,            # list[str] length n_channels
+    eeg,                      
+    fs,                      
+    channel_names,            
     window_sec=2.0,
     step_sec=0.5,
     eyes_closed=True,
@@ -179,29 +178,27 @@ def detect_rest_epochs(
     return results
 
 
-# --------------------------
-# DEMO WITH FAKE DATA (more illustrative)
-# --------------------------
+
 if __name__ == "__main__":
     fs = 250
     duration = 20.0
     n_channels = 8
     t = np.arange(0, duration, 1/fs)
 
-    # ---- Build data with a clear change: 0–5 s "active", 5–20 s "rest"
-    eeg = np.random.randn(n_channels, t.size) * 0.2   # base noise
 
-    # Add beta-ish activity (18 Hz) + extra noise to simulate "not rest" at the start
+    eeg = np.random.randn(n_channels, t.size) * 0.2   
+
+
     beta = np.sin(2*np.pi*18*t)
     active_mask = t < 5.0
     eeg[6, active_mask] += beta[active_mask] * 1.5
     eeg[7, active_mask] += beta[active_mask] * 1.5
 
-    # Add strong alpha (10 Hz) during rest period (>=5 s) on O1/O2
+
     alpha = np.sin(2*np.pi*10*t)
     rest_mask_time = t >= 5.0
-    eeg[6, rest_mask_time] += alpha[rest_mask_time] * 2.0  # O1
-    eeg[7, rest_mask_time] += alpha[rest_mask_time] * 2.0  # O2
+    eeg[6, rest_mask_time] += alpha[rest_mask_time] * 2.0  
+    eeg[7, rest_mask_time] += alpha[rest_mask_time] * 2.0  
 
     channel_names = ["F3","F4","C3","C4","P3","P4","O1","O2"]
 
@@ -217,22 +214,22 @@ if __name__ == "__main__":
     print("Num windows:", len(results["rest_mask"]), 
           "  Num rest windows:", int(results["rest_mask"].sum()))
 
-    # ---- Better visualization: alpha ratio over time + threshold + rest markers
-    times = results["window_times"][:, 0]                 # window start times
+  
+    times = results["window_times"][:, 0]                 
     alpha_ratio = results["features"]["alpha_ratio"]
     is_rest = results["rest_mask"]
 
-    # The alpha-ratio threshold we used for eyes-closed default
+
     alpha_ratio_threshold = 1.4
 
     plt.figure(figsize=(10, 4))
     plt.plot(times, alpha_ratio, label="Alpha ratio")
     plt.axhline(alpha_ratio_threshold, linestyle="--", label="Alpha ratio threshold")
 
-    # Mark windows that are rest
+
     plt.plot(times[is_rest], alpha_ratio[is_rest], "o", label="Rest windows")
 
-    # Shade the final merged rest intervals for clarity
+
     for (s, e) in results["rest_intervals"]:
         plt.axvspan(s, e, alpha=0.15, label="Rest interval" if s == results["rest_intervals"][0][0] else None)
 
