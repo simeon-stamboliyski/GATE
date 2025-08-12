@@ -1,0 +1,44 @@
+1. When are matrices invertible?
+	•	Must be a square matrix (same number of rows and columns).
+	•	Determinant is not zero (\det(A) \neq 0).
+	•	Matrix has full rank (all rows and columns are linearly independent).
+	•	Non-square matrices are NOT invertible (but can have pseudo-inverses).
+
+2. What is Tikhonov Regularization? When is it used?
+	•	Used to solve problems where the system is unstable or has noisy data.
+	•	Adds a penalty term to the solution to stabilize it:
+        	\min_x \|Ax - b\|^2 + \lambda \|x\|^2
+	•	Useful when:
+	•	The matrix is close to singular or ill-conditioned.
+	•	You want to avoid overfitting or handle noisy data.
+
+3. Methods to solve linear systems Ax = b:
+	•	Gaussian Elimination:
+			Directly solves by reducing to upper-triangular form.
+			Use for small to medium dense matrices.
+	•	LU Decomposition:
+			Factorizes A = LU (Lower and Upper triangular matrices).
+			Good for square matrices and multiple right sides.
+	•	QR Decomposition:
+			Factorizes A = QR (Q orthogonal, R upper triangular).
+			Useful for least squares and rectangular matrices.
+	•	Cholesky Decomposition:
+			Factorizes symmetric positive-definite A = LL^T.
+			Fast and efficient, but only for positive-definite matrices.
+	•	Singular Value Decomposition (SVD):
+			Factorizes A = U \Sigma V^T.
+			Used for any matrix, especially ill-conditioned or rank-deficient.
+
+4. When to use which method?
+
+Method					Matrix Size			Matrix Structure				Notes
+Gaussian Elimination	Small to medium		Dense							Simple but slow for large sizes
+LU Decomposition		Medium to large		Square, dense					Efficient for multiple solves
+QR Decomposition		Small to large		Dense or rectangular			Stable, good for least squares
+Cholesky Decomposition	Medium to large		Symmetric, positive-definite	Very efficient, limited scope
+SVD						Small to medium		Any matrix						Most expensive, very stable
+
+	•	For sparse matrices: use specialized sparse solvers.
+	•	For diagonal matrices: just invert diagonal elements.
+	•	For tridiagonal matrices: use specialized algorithms like Thomas algorithm.
+	•	For very large matrices: iterative methods may be better.

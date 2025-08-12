@@ -1,0 +1,108 @@
+Week 1 Documentation: Theoretical introduction to the essence of the work
+
+Spent the whole week going through the introdata provided by my team leads. 
+Learned about basic statistics, EEG processing basics and crucial instruments in signal processing 
+like PCA, ICA, Power Spectrum, and PSD (Power Spectral Density).
+
+Week 2/3 Documentation: Fourier Transforms & EEG Signal Analysis
+
+Theoretical Reading
+
+	•	Studied the mathematical definition of the Fourier Transform and its inverse.
+	•	Learned key properties: linearity, time-shifting, frequency-shifting, and convolution.
+	•	Explored common Fourier pairs and graphical examples to gain intuition on frequency decomposition.
+	•	Reviewed the Dirac delta function, a theoretical construct critical to understanding impulse responses and Fourier representations.
+
+Practical Tasks
+
+1. Find the Fourier Transform of Three Functions
+	•	Chose three time-domain functions and computed their Fourier transforms analytically:
+	•	f_1(t) = sin(2\pi f t)
+	•	f_2(t) = e^{-|t|}
+	•	f_3(t) = rect(t/T)
+	•	Solved the integrals by hand and verified known transform pairs.
+	•	Used properties of symmetry and linearity in the integration process.
+
+1a. Read About the Dirac Delta Function
+	•	Understood delta(t) as an idealized impulse with the sifting property
+	•	Learned that the delta function is central in defining the Fourier transform of pure sinusoids and for sampling theory.
+
+2. Load the Three .mat EEG Files
+	•	Loaded three EEG recordings in Python using scipy.io.loadmat().
+	•	Verified that each contained a matrix y of shape (66, N), where 66 = number of channels and N = number of time samples.
+
+3. Combine the Three Signals into One
+	•	Concatenated the signal matrices horizontally (axis=1) using NumPy:
+    •	Saved the result to a new .mat file using savemat() for future processing.
+
+4. Inspect the 50 Hz Peak in Frequency Domain
+	•	Applied the Fast Fourier Transform (FFT) to each EEG channel.
+	•	Visualized the power spectra using matplotlib.
+	•	Observed a significant peak around 50 Hz, likely corresponding to power line interference common in EEG setups.
+
+5. Calculate the Length of the Recording
+	•	With a known sampling frequency of 250 Hz, calculated:
+            \text{duration} = \frac{\text{total samples}}{\text{sampling frequency}}
+	•	For example, with 179,953 samples:
+            \frac{179,953}{250} \approx 719.8 \text{ seconds (≈12 minutes)}
+
+6. Determine Relevant EEG Channels
+	•	Based on a visual inspection image, selected working (green) channels:
+            [5, 8, 10, 12, 14, 16, 23, 30, 32, 34, 44, 48, 62]
+    •	Used these indices to filter the signal matrix for analysis and plotting.
+
+7. Brain Wave Frequency Ranges
+
+    Comment block added in code:
+        # Brain wave frequency bands:
+        # Delta:   0.5 – 4   Hz
+        # Theta:   4   – 8   Hz
+        # Alpha:   8   – 13  Hz
+        # Beta:    13  – 30  Hz
+        # Gamma:   30  – 100 Hz
+
+8. Apply Bandpass Filter for Alpha Waves
+	•	Designed a bandpass filter using scipy.signal.butter() to isolate Alpha waves (8–13 Hz)
+    •	Plotted the filtered result on a new figure to visualize oscillatory behavior in the Alpha band.
+
+Tools & Libraries Used
+	•	Python 3
+	•	NumPy for numerical operations
+	•	SciPy for signal processing and .mat file handling
+	•	Matplotlib for data visualization
+	•	MATLAB (optional) for comparison
+
+Week 4 documentation: Gaussian filtering for Computer Vision, resting state identifier software and statistics.
+
+2D Gaussian Filtering Function in Python
+
+During this week, I recreated a 2D Gaussian filter function originally implemented in MATLAB, adapting it to Python using NumPy and FFT techniques. This was necessary because the existing SciPy Gaussian filter did not replicate the exact behavior I required.
+	•	The function supports Gaussian smoothing with optional derivative orders in both x and y directions.
+	•	It applies frequency-domain filtering via FFT and inverse FFT for efficient convolution.
+	•	It also includes an option to simulate boundary effects through image padding and cropping.
+
+This custom implementation allowed more precise control over the filtering process, useful for image and signal processing tasks.
+
+⸻
+
+EEG Resting-State Detection Software
+
+I developed a software module to automatically detect resting-state epochs within EEG recordings, leveraging spectral analysis techniques. The software performs:
+	•	Sliding window Welch’s PSD estimation on multiple EEG channels.
+	•	Calculation of band powers (theta, alpha, beta, high-frequency), spectral entropy, and inter-hemispheric symmetry metrics.
+	•	Application of threshold criteria tuned for eyes-closed or eyes-open resting states to identify stable resting epochs.
+	•	Aggregation of consecutive windows passing all criteria to form resting intervals.
+
+This tool enables objective identification of resting state periods from raw EEG data, useful for research and clinical analysis.
+
+⸻
+
+Research and Review: Linear Algebra & Statistical Methods
+
+In parallel, I studied key mathematical and statistical concepts relevant to my internship and coursework, focusing on:
+	•	Matrix Invertibility: Conditions such as square shape, full rank, and non-zero determinant that ensure invertibility.
+	•	Tikhonov Regularization: A method to stabilize solutions to ill-conditioned linear systems by adding a penalty term, preventing overfitting and managing noisy data.
+	•	Linear System Solvers: Overview of methods including Gaussian elimination, LU, QR, Cholesky decompositions, and Singular Value Decomposition (SVD), along with their applicable matrix types and use cases.
+	•	Guidance on choosing appropriate solvers based on matrix size, structure, and properties.
+
+This theoretical foundation supports efficient and stable numerical computations essential in signal processing and machine learning tasks.
