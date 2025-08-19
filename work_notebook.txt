@@ -106,3 +106,70 @@ In parallel, I studied key mathematical and statistical concepts relevant to my 
 	•	Guidance on choosing appropriate solvers based on matrix size, structure, and properties.
 
 This theoretical foundation supports efficient and stable numerical computations essential in signal processing and machine learning tasks.
+
+
+Here’s a nicely documented description for Week 5 of your project, covering both MATLAB and Python implementations:
+
+⸻
+
+Week 5 – Video Dataset Mapping and Spreadsheet Export (MATLAB & Python)
+
+Objective:
+Create reusable functions in MATLAB and Python that take only the path to the parent folder of a computer vision dataset (specifically the LE2i dataset) and automatically generate a structured spreadsheet with video paths, fall labels, and start/end frames.
+
+⸻
+
+1. MATLAB Function – mapLE2iDataset.m
+
+Purpose:
+	•	Traverse all environment folders in the dataset.
+	•	Read annotation files (*.txt) to get fall start and end frames.
+	•	Pair videos (*.avi) with their corresponding annotations.
+	•	Export the results to a CSV and display a neat table in the console.
+
+Key Features:
+	•	Accepts one input: parentFolder (root dataset folder).
+	•	Returns a cell array infoList with columns:
+
+
+	•	Uses dir to list folders and files, MATLAB’s natural alphabetical ordering ensures proper pairing of videos and annotations.
+	•	Includes a helper function readFirstNumbers to read only the first two lines of the annotation file.
+	•	Manual CSV export and console table formatting.
+
+Usage Example:
+
+parentFolder = '/path/to/dataset';
+infoList = mapLE2iDataset(parentFolder);
+
+
+⸻
+
+2. Python Function – mapLE2iDataset.py
+
+Purpose:
+	•	Replicate MATLAB functionality in Python.
+	•	Traverse folders, read annotations, pair with videos, and export results.
+	•	Support CSV and Excel outputs.
+	•	Print a neat table in the console.
+
+Key Features:
+	•	Accepts one input via console:
+
+		parentFolder = input("Enter the path to the parent folder: ")
+
+	•	Returns infoList, a list of lists with columns:
+
+		[video_path, fall_label, startFrame, endFrame]
+
+
+	•	Reads only the first two integers from each annotation file for start/end frames.
+	•	Alphabetically sorts both annotation and video lists to ensure correct mapping (matching MATLAB behavior).
+	•	Exports to CSV (csv module) and Excel (pandas).
+	•	Prints a console table similar to MATLAB.
+
+		Usage Example:
+
+		python mapLE2iDataset.py
+
+	•	Enter the path to the parent folder when prompted.
+	•	Outputs: video_info.csv, video_info.xlsx, and a console table.
