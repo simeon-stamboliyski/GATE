@@ -34,18 +34,18 @@ def gauss2d(L, s, ord_=0, beffect=False):
 
     FFL = fftn(L)
 
-    wx = np.fft.fftfreq(nx) * 2 * np.pi * sx
-    wy = np.fft.fftfreq(ny) * 2 * np.pi * sy
+    wx = np.fft.fftfreq(nx) * 2 * np.pi
+    wy = np.fft.fftfreq(ny) * 2 * np.pi
 
     if dx != 0:
-        wx = (1j * wx) ** dx * np.exp(-wx ** 2)
+        wx = (1j * wx) ** dx * np.exp(-(sx * wx) ** 2 / 2)
     else:
-        wx = np.exp(-wx ** 2)
+        wx = np.exp(-(sx * wx) ** 2 / 2)
 
     if dy != 0:
-        wy = (1j * wy) ** dy * np.exp(-wy ** 2)
+        wy = (1j * wy) ** dy * np.exp(-(sy * wy) ** 2 / 2)
     else:
-        wy = np.exp(-wy ** 2)
+        wy = np.exp(-(sy * wy) ** 2 / 2)
 
 
     w = np.outer(wy, wx)
