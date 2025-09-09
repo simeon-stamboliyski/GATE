@@ -1,9 +1,15 @@
 import os
 import csv
 import pandas as pd
+import re
 
 # Every folder in the parent folder should only contain two other folders named Videos and Annotation_files
 # Install all libraries before using the function
+
+def natural_sort_key(s):
+    """Sort strings containing numbers in natural order."""
+    return [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]
+
 
 def mapLE2iDataset(parentFolder):
     """
@@ -32,8 +38,9 @@ def mapLE2iDataset(parentFolder):
             print(f"Skipping {envPath}, missing subfolders.")
             continue
 
-        # Get annotation files
-        annotFiles = sorted([f for f in os.listdir(annotFolder) if f.endswith(".txt")])
+        # Get annotation files and sort naturally
+        annotFiles = sorted([f for f in os.listdir(annotFolder) if f.endswith(".txt")],
+                            key=natural_sort_key)
         arrLabel = []
         fallFrames = []
 
@@ -43,8 +50,9 @@ def mapLE2iDataset(parentFolder):
             fallFrames.append([startFrame, endFrame])
             arrLabel.append(1 if startFrame > 0 else 0)
 
-        # Get video files
-        videoFiles = sorted([f for f in os.listdir(videoFolder) if f.endswith(".avi")])
+        # Get video files and sort naturally
+        videoFiles = sorted([f for f in os.listdir(videoFolder) if f.endswith(".avi")],
+                            key=natural_sort_key)
 
         # Map videos to labels
         for k, vFile in enumerate(videoFiles):

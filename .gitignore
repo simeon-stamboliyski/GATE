@@ -1,3 +1,7 @@
 videos_comp_vision/
 *.DS_Store
 results/
+plots/
+video_info.csv
+video_info.xlsx
+fv_le2i_SF_Tv_max.mat
