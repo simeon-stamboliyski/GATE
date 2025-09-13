@@ -1,8 +1,12 @@
 from scipy.io import loadmat
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
-data2 = loadmat('file2.mat')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(script_dir, "file2.mat")
+
+data2 = loadmat(file_path)
 signal = data2['y']
 
 green_channels = [5, 8, 10, 12, 14, 16, 23, 30, 32, 34, 44, 48, 62]
