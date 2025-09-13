@@ -1,3 +1,4 @@
+import os
 from scipy.io import loadmat, savemat
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,7 +27,10 @@ from scipy.signal import butter, filtfilt
 
 # savemat('combined_signal.mat', {'y': combined_signal})
 
-combined_data = loadmat('combined_signal.mat')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(script_dir, "combined_signal.mat")
+
+combined_data = loadmat(file_path)
 signal = combined_data['y']
 
 green_channels = [5, 8, 10, 12, 14, 16, 23, 30, 32, 34, 44, 48, 62]
